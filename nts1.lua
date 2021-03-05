@@ -48,6 +48,7 @@ Nts1.osc.duet   = function() Nts1.osc.set_type(Nts1.osc.TYPES.DUET) end
 Nts1.osc.mist   = function() Nts1.osc.set_type(Nts1.osc.TYPES.MIST) end
 
 Nts1.osc.shape  = function(value) nts1:cc(Nts1.osc.SHAPE, value - 1) end
+Nts1.osc.shpe   = Nts1.osc.shape
 Nts1.osc.alt    = function(value) nts1:cc(Nts1.osc.ALT, value - 1) end
 
 -- Filter
@@ -77,8 +78,10 @@ Nts1.filter.hp2  = function() Nts1.filter.set_type(Nts1.filter.TYPES.HP2) end
 Nts1.filter.hp4  = function() Nts1.filter.set_type(Nts1.filter.TYPES.HP4) end
 Nts1.filter.off  = function() Nts1.filter.set_type(Nts1.filter.TYPES.OFF) end
 
-Nts1.filter.cutf = function(value) nts1:cc(Nts1.filter.CUTF, value - 1) end
-Nts1.filter.reso = function(value) nts1:cc(Nts1.filter.RESO, value - 1) end
+Nts1.filter.cutoff    = function(value) nts1:cc(Nts1.filter.CUTF, value - 1) end
+Nts1.filter.cutf      = Nts1.filter.cutoff
+Nts1.filter.resonance = function(value) nts1:cc(Nts1.filter.RESO, value - 1) end
+Nts1.filter.reso      = Nts1.filter.resonance
 
 -- Envelope generator
 
@@ -103,7 +106,9 @@ Nts1.eg.arl      = function() Nts1.eg.set_type(Nts1.eg.TYPES.ARL) end
 Nts1.eg.open     = function() Nts1.eg.set_type(Nts1.eg.TYPES.OPEN) end
 
 Nts1.eg.attack   = function(value) nts1:cc(Nts1.eg.ATTACK, value - 1) end
+Nts1.eg.atck     = Nts1.eg.attack
 Nts1.eg.release  = function(value) nts1:cc(Nts1.eg.RELEASE, value - 1) end
+Nts1.eg.rlse     = Nts1.eg.release
 
 -- Mod
 
@@ -132,6 +137,7 @@ Nts1.mod.nuf22mod = function() Nts1.mod.set_type(Nts1.mod.TYPES.NUF22MOD) end
 
 Nts1.mod.time     = function(value) nts1:cc(Nts1.mod.TIME, value) end
 Nts1.mod.depth    = function(value) nts1:cc(Nts1.mod.DEPTH, value) end
+Nts1.mod.dpth     = Nts1.mod.depth
 
 -- Delay
 
@@ -165,6 +171,7 @@ Nts1.delay.nuf22del = function() Nts1.delay.set_type(Nts1.delay.TYPES.NUF22DEL) 
 
 Nts1.delay.time     = function(value) nts1:cc(Nts1.delay.TIME, value) end
 Nts1.delay.depth    = function(value) nts1:cc(Nts1.delay.DEPTH, value) end
+Nts1.delay.dpth     = Nts1.mod.depth
 Nts1.delay.mix      = function(value) nts1:cc(Nts1.delay.MIX, value) end
 
 -- Reverb
@@ -206,6 +213,7 @@ Nts1.reverb.breathhd   = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.BREAT
 
 Nts1.reverb.time       = function(value) nts1:cc(Nts1.reverb.TIME, value) end
 Nts1.reverb.depth      = function(value) nts1:cc(Nts1.reverb.DEPTH, value) end
+Nts1.reverb.dpth       = Nts1.reverb.depth
 Nts1.reverb.mix        = function(value) nts1:cc(Nts1.reverb.MIX, value) end
 
 -- Arp
