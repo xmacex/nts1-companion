@@ -144,7 +144,7 @@ Nts1.delay = {
     HIGHPASS = math.floor(MIDIRANGE / 7) * 4,
     TAPE     = math.floor(MIDIRANGE / 7) * 5,
     GRIT     = math.floor(MIDIRANGE / 7) * 6,
-    NUF22DEL = math.floor(MIDIRANGE / 7) * 7,
+    NUF22DEL = math.floor(MIDIRANGE / 7) * 7
   },
   TYPE  = 89,
   TIME  = 30,
@@ -161,7 +161,7 @@ Nts1.delay.ping     = function() Nts1.delay.set_type(Nts1.delay.TYPES.PING) end
 Nts1.delay.highpass = function() Nts1.delay.set_type(Nts1.delay.TYPES.HIGHPASS) end
 Nts1.delay.tape     = function() Nts1.delay.set_type(Nts1.delay.TYPES.TAPE) end
 Nts1.delay.grit     = function() Nts1.delay.set_type(Nts1.delay.TYPES.GRIT) end
-Nts1.delay.NUF22DEL = function() Nts1.delay.set_type(Nts1.delay.TYPES.NUF22DEL) end
+Nts1.delay.nuf22del = function() Nts1.delay.set_type(Nts1.delay.TYPES.NUF22DEL) end
 
 Nts1.delay.time     = function(value) nts1:cc(Nts1.delay.TIME, value) end
 Nts1.delay.depth    = function(value) nts1:cc(Nts1.delay.DEPTH, value) end
@@ -195,6 +195,7 @@ Nts1.reverb.off        = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.OFF) 
 Nts1.reverb.hall       = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.HALL) end
 Nts1.reverb.plate      = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.PLATE) end
 Nts1.reverb.space      = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.SPACE) end
+Nts1.reverb.riser      = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.RISER) end
 Nts1.reverb.subnar     = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.SUBNAR) end
 Nts1.reverb.theaterpro = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.THEATERPRO) end
 Nts1.reverb.theaterhd  = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.THEATERHD) end
@@ -222,11 +223,12 @@ Nts1.arp = {
     RAND = math.floor(MIDIRANGE / 9) * 8,
     STOC = math.floor(MIDIRANGE / 9) * 9
   },
+  PATTERN   = 117,
   INTERVALS = 118,
   LENGTH    = 119
 }
 
-Nts1.arp.set_pattern = function(arp_pattern) nts1:cc(Nts1.arp.PATTERNS, arp_pattern) end
+Nts1.arp.set_pattern = function(arp_pattern) nts1:cc(Nts1.arp.PATTERN, arp_pattern) end
 
 Nts1.arp.up   = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.UP) end
 Nts1.arp.down = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.DOWN) end
