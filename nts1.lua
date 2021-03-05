@@ -47,8 +47,8 @@ Nts1.osc.chips  = function() Nts1.osc.set_type(Nts1.osc.TYPES.CHIPS) end
 Nts1.osc.duet   = function() Nts1.osc.set_type(Nts1.osc.TYPES.DUET) end
 Nts1.osc.mist   = function() Nts1.osc.set_type(Nts1.osc.TYPES.MIST) end
 
-Nts1.osc.shape = function(value) nts1:cc(Nts1.osc.SHAPE, value - 1) end
-Nts1.osc.alt   = function(value) nts1:cc(Nts1.osc.ALT, value - 1) end
+Nts1.osc.shape  = function(value) nts1:cc(Nts1.osc.SHAPE, value - 1) end
+Nts1.osc.alt    = function(value) nts1:cc(Nts1.osc.ALT, value - 1) end
 
 -- Filter
 
@@ -69,13 +69,13 @@ Nts1.filter = {
 
 Nts1.filter.set_type = function(filter_type) nts1:cc(Nts1.filter.TYPE, filter_type) end
 
-Nts1.filter.lp2 = function() Nts1.filter.set_type(Nts1.filter.TYPES.LP2) end
-Nts1.filter.lp4 = function() Nts1.filter.set_type(Nts1.filter.TYPES.LP4) end
-Nts1.filter.bp2 = function() Nts1.filter.set_type(Nts1.filter.TYPES.BP2) end
-Nts1.filter.bp4 = function() Nts1.filter.set_type(Nts1.filter.TYPES.BP4) end
-Nts1.filter.hp2 = function() Nts1.filter.set_type(Nts1.filter.TYPES.HP2) end
-Nts1.filter.hp4 = function() Nts1.filter.set_type(Nts1.filter.TYPES.HP4) end
-Nts1.filter.off = function() Nts1.filter.set_type(Nts1.filter.TYPES.OFF) end
+Nts1.filter.lp2  = function() Nts1.filter.set_type(Nts1.filter.TYPES.LP2) end
+Nts1.filter.lp4  = function() Nts1.filter.set_type(Nts1.filter.TYPES.LP4) end
+Nts1.filter.bp2  = function() Nts1.filter.set_type(Nts1.filter.TYPES.BP2) end
+Nts1.filter.bp4  = function() Nts1.filter.set_type(Nts1.filter.TYPES.BP4) end
+Nts1.filter.hp2  = function() Nts1.filter.set_type(Nts1.filter.TYPES.HP2) end
+Nts1.filter.hp4  = function() Nts1.filter.set_type(Nts1.filter.TYPES.HP4) end
+Nts1.filter.off  = function() Nts1.filter.set_type(Nts1.filter.TYPES.OFF) end
 
 Nts1.filter.cutf = function(value) nts1:cc(Nts1.filter.CUTF, value - 1) end
 Nts1.filter.reso = function(value) nts1:cc(Nts1.filter.RESO, value - 1) end
@@ -96,12 +96,115 @@ Nts1.eg = {
 }
 
 Nts1.eg.set_type = function(eg_type) nts1:cc(Nts1.eg.TYPE, eg_type) end
-Nts1.eg.ahr      = function() EG.set_type(Nts1.eg.TYPES.AHR) end
-Nts1.eg.ar       = function() EG.set_type(Nts1.eg.TYPES.AR) end
-Nts1.eg.arl      = function() EG.set_type(Nts1.eg.TYPES.ARL) end
-Nts1.eg.open     = function() EG.set_type(Nts1.eg.TYPES.OPEN) end
+
+Nts1.eg.ahr      = function() Nts1.eg.set_type(Nts1.eg.TYPES.AHR) end
+Nts1.eg.ar       = function() Nts1.eg.set_type(Nts1.eg.TYPES.AR) end
+Nts1.eg.arl      = function() Nts1.eg.set_type(Nts1.eg.TYPES.ARL) end
+Nts1.eg.open     = function() Nts1.eg.set_type(Nts1.eg.TYPES.OPEN) end
 
 Nts1.eg.attack   = function(value) nts1:cc(Nts1.eg.ATTACK, value - 1) end
 Nts1.eg.release  = function(value) nts1:cc(Nts1.eg.RELEASE, value - 1) end
+
+-- Mod
+
+Nts1.mod = {
+  TYPES = {
+    OFF = 0,
+    CHORUS   = math.floor(MIDIRANGE / 5) * 1,
+    ENSEMBLE = math.floor(MIDIRANGE / 5) * 2,
+    PHASER   = math.floor(MIDIRANGE / 5) * 3,
+    FLANGER  = math.floor(MIDIRANGE / 5) * 4,
+    NUF22MOD = math.floor(MIDIRANGE / 5) * 5,
+  },
+  TYPE = 88,
+  TIME = 28,
+  DEPTH = 29
+}
+
+Nts1.mod.set_type = function(mod_type) nts1:cc(Nts1.mod.TYPE, mod_type) end
+
+Nts1.mod.off      = function() Nts1.mod.set_type(Nts1.mod.TYPES.OFF) end
+Nts1.mod.chorus   = function() Nts1.mod.set_type(Nts1.mod.TYPES.CHORUS) end
+Nts1.mod.ensemble = function() Nts1.mod.set_type(Nts1.mod.TYPES.ENSEMBLE) end
+Nts1.mod.phaser   = function() Nts1.mod.set_type(Nts1.mod.TYPES.PHASER) end
+Nts1.mod.flanger  = function() Nts1.mod.set_type(Nts1.mod.TYPES.FLANGER) end
+Nts1.mod.nuf22mod = function() Nts1.mod.set_type(Nts1.mod.TYPES.NUF22MOD) end
+
+Nts1.mod.time     = function(value) nts1:cc(Nts1.mod.TIME, value) end
+Nts1.mod.depth    = function(value) nts1:cc(Nts1.mod.DEPTH, value) end
+
+-- Delay
+
+Nts1.delay = {
+  TYPES = {
+    OFF = 0,
+    STEREO   = math.floor(MIDIRANGE / 7) * 1,
+    MONO     = math.floor(MIDIRANGE / 7) * 2,
+    PING     = math.floor(MIDIRANGE / 7) * 3,
+    HIGHPASS = math.floor(MIDIRANGE / 7) * 4,
+    TAPE     = math.floor(MIDIRANGE / 7) * 5,
+    GRIT     = math.floor(MIDIRANGE / 7) * 6,
+    NUF22DEL = math.floor(MIDIRANGE / 7) * 7,
+  },
+  TYPE  = 89,
+  TIME  = 30,
+  DEPTH = 31,
+  MIX   = 36
+}
+
+Nts1.delay.set_type = function(delay_type) nts1:cc(Nts1.delay.TYPE, delay_type) end
+
+Nts1.delay.off      = function() Nts1.delay.set_type(Nts1.delay.TYPES.OFF) end
+Nts1.delay.stereo   = function() Nts1.delay.set_type(Nts1.delay.TYPES.STEREO) end
+Nts1.delay.mono     = function() Nts1.delay.set_type(Nts1.delay.TYPES.MONO) end
+Nts1.delay.ping     = function() Nts1.delay.set_type(Nts1.delay.TYPES.PING) end
+Nts1.delay.highpass = function() Nts1.delay.set_type(Nts1.delay.TYPES.HIGHPASS) end
+Nts1.delay.tape     = function() Nts1.delay.set_type(Nts1.delay.TYPES.TAPE) end
+Nts1.delay.grit     = function() Nts1.delay.set_type(Nts1.delay.TYPES.GRIT) end
+Nts1.delay.NUF22DEL = function() Nts1.delay.set_type(Nts1.delay.TYPES.NUF22DEL) end
+
+Nts1.delay.time     = function(value) nts1:cc(Nts1.delay.TIME, value) end
+Nts1.delay.depth    = function(value) nts1:cc(Nts1.delay.DEPTH, value) end
+Nts1.delay.mix      = function(value) nts1:cc(Nts1.delay.MIX, value) end
+
+-- Reverb
+
+Nts1.reverb = {
+  TYPES = {
+    OFF = 0,
+    HALL       = math.floor(MIDIRANGE / 11) * 1,
+    PLATE      = math.floor(MIDIRANGE / 11) * 2,
+    SPACE      = math.floor(MIDIRANGE / 11) * 3,
+    RISER      = math.floor(MIDIRANGE / 11) * 4,
+    SUBNAR     = math.floor(MIDIRANGE / 11) * 5,
+    THEATERPRO = math.floor(MIDIRANGE / 11) * 6,
+    THEATERHD  = math.floor(MIDIRANGE / 11) * 7,
+    MIST       = math.floor(MIDIRANGE / 11) * 8,
+    HAZE       = math.floor(MIDIRANGE / 11) * 9,
+    SNIFFHD    = math.floor(MIDIRANGE / 11) * 10,
+    BREATHHD   = math.floor(MIDIRANGE / 11) * 11,
+  },
+  TYPE  = 90,
+  TIME  = 34,
+  DEPTH = 35,
+  MIX   = 36
+}
+
+Nts1.reverb.set_type   = function(reverb_type) nts1:cc(Nts1.reverb.TYPE, reverb_type) end
+Nts1.reverb.off        = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.OFF) end
+Nts1.reverb.hall       = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.HALL) end
+Nts1.reverb.plate      = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.PLATE) end
+Nts1.reverb.space      = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.SPACE) end
+Nts1.reverb.subnar     = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.SUBNAR) end
+Nts1.reverb.theaterpro = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.THEATERPRO) end
+Nts1.reverb.theaterhd  = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.THEATERHD) end
+Nts1.reverb.mist       = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.MIST) end
+Nts1.reverb.haze       = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.HAZE) end
+Nts1.reverb.sniffhd    = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.SHIFFHD) end
+Nts1.reverb.breathhd   = function() Nts1.reverb.set_type(Nts1.reverb.TYPES.BREATHHD) end
+
+Nts1.reverb.time       = function(value) nts1:cc(Nts1.reverb.TIME, value) end
+Nts1.reverb.depth      = function(value) nts1:cc(Nts1.reverb.DEPTH, value) end
+Nts1.reverb.mix        = function(value) nts1:cc(Nts1.reverb.MIX, value) end
 
 return Nts1
