@@ -207,4 +207,76 @@ Nts1.reverb.time       = function(value) nts1:cc(Nts1.reverb.TIME, value) end
 Nts1.reverb.depth      = function(value) nts1:cc(Nts1.reverb.DEPTH, value) end
 Nts1.reverb.mix        = function(value) nts1:cc(Nts1.reverb.MIX, value) end
 
+-- Arp
+
+Nts1.arp = {
+  PATTERNS = {
+    UP   = 0,
+    DOWN = math.floor(MIDIRANGE / 9) * 1,
+    UD   = math.floor(MIDIRANGE / 9) * 2,
+    DU   = math.floor(MIDIRANGE / 9) * 3,
+    CONV = math.floor(MIDIRANGE / 9) * 4,
+    DIV  = math.floor(MIDIRANGE / 9) * 5,
+    CD   = math.floor(MIDIRANGE / 9) * 6,
+    DC   = math.floor(MIDIRANGE / 9) * 7,
+    RAND = math.floor(MIDIRANGE / 9) * 8,
+    STOC = math.floor(MIDIRANGE / 9) * 9
+  },
+  INTERVALS = 118,
+  LENGTH    = 119
+}
+
+Nts1.arp.set_pattern = function(arp_pattern) nts1:cc(Nts1.arp.PATTERNS, arp_pattern) end
+
+Nts1.arp.up   = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.UP) end
+Nts1.arp.down = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.DOWN) end
+Nts1.arp.ud   = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.UD) end
+Nts1.arp.du   = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.DU) end
+Nts1.arp.conv = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.CONV) end
+Nts1.arp.div  = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.DIV) end
+Nts1.arp.cd   = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.CD) end
+Nts1.arp.dc   = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.DC) end
+Nts1.arp.rand = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.RAND) end
+Nts1.arp.stoc = function() Nts1.arp.set_pattern(Nts1.arp.PATTERNS.STOC) end
+
+-- arp speed range is 56 - 240
+-- what are intervals?
+Nts1.arp.intervals = function(value) nts1:cc(Nts1.arp.INTERVALS, value) end
+Nts1.arp.length    = function(value) nts1:cc(Nts1.arp.LENGTH, math.floor(MIDIRANGE / 24 * value - 1)) end
+
+-- LFO
+
+Nts1.lfo = {
+  RATE  = 24,
+  DEPTH = 26
+}
+
+Nts1.lfo.rate  = function(value) nts1:cc(Nts1.lfo.RATE, math.floor(MIDIRANGE / 30) * value) end
+Nts1.lfo.depth = function(value) nts1:cc(Nts1.lfo.DEPTH, value) end
+Nts1.lfo.pitch = function(value) Nts1.lfo.depth(math.floor((MIDIRANGE/2) - (MIDIRANGE/2/100 * value))) end
+Nts1.lfo.shape = function(value) Nts1.lfo.depth(math.floor((MIDIRANGE/2) + (MIDIRANGE/2/100 * value))) end
+
+
+-- Sweep
+
+Nts1.sweep = {
+  RATE  = 45,
+  DEPTH = 46
+}
+
+Nts1.sweep.rate  = function(value) nts1:cc(Nts1.sweep.RATE, math.floor(MIDIRANGE / 30) * value) end
+Nts1.sweep.depth = function(value) nts1:cc(Nts1.sweep.DEPTH, value) end
+Nts1.sweep.down = function(value) Nts1.sweep.depth(math.floor((MIDIRANGE/2) - (MIDIRANGE/2/100 * value))) end
+Nts1.sweep.up   = function(value) Nts1.sweep.depth(math.floor((MIDIRANGE/2) + (MIDIRANGE/2/100 * value))) end
+
+-- Tremollo
+
+Nts1.tremollo = {
+  RATE  = 20,
+  DEPTH = 21
+}
+
+Nts1.tremollo.rate  = function(value) nts1:cc(Nts1.tremollo.RATE, math.floor(MIDIRANGE / 60) * value) end
+Nts1.tremollo.depth = function(value) nts1:cc(Nts1.tremollo.DEPTH, value) end
+
 return Nts1
