@@ -7,12 +7,23 @@
 --
 -- I have no idea how to write Lua modules. Advice welcome.
 
-nts1 = midi.connect(2)
-
-Nts1 = {}
 
 local DEBUG = true
 local MIDIRANGE = 128
+
+Nts1 = {}
+
+-- Seek the MIDI port of a connected NTS-1.
+-- Finds only the first one.
+Nts1.get_midi_port = function()
+  for i,device in pairs(midi.devices) do
+    if device.name == "NTS-1 digital kit" then
+      return device.port
+    end
+  end
+end
+
+nts1 = midi.connect(Nts1.get_midi_port())
 
 -- Oscillator
 
