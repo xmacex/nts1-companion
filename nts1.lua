@@ -25,6 +25,35 @@ end
 
 nts1 = midi.connect(Nts1.get_midi_port())
 
+--
+
+Nts1.SYSEX = {
+  HELLO = {0x42, 0x50, 0x00, 0x02}
+}
+
+-- Send sysex.
+--
+-- adapted from zebra's https://llllllll.co/t/how-do-i-send-midi-sysex-messages-on-norns/34359/15?u=xmacex
+--
+-- @param m: a midi device
+-- @param d: a table of systex data, omitting the framing bytes
+Nts1.send_sysex = function(d)
+  nts1:send{0xf0}
+  for i,v in ipairs(d) do
+    nts1:send{d[i]}
+  end
+  nts1:send{0xf7}
+end
+
+-- Monitor
+
+nts1.event = function(data)
+  local msg = midi.to_msg(data)
+  if msg.type ~= "clock" then
+    tab.print(msg)
+  do
+end
+
 -- Oscillator
 
 Nts1.osc = {
