@@ -51,7 +51,7 @@ nts1.event = function(data)
   local msg = midi.to_msg(data)
   if msg.type ~= "clock" then
     tab.print(msg)
-  do
+  end
 end
 
 -- Oscillator
