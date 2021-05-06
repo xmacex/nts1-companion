@@ -10,6 +10,7 @@
 
 local DEBUG = true
 local MIDIRANGE = 128
+SYSEX_RECEIVED = nil
 
 Nts1 = {}
 
@@ -28,14 +29,24 @@ nts1 = midi.connect(Nts1.get_midi_port())
 --
 
 Nts1.SYSEX = {
-  HELLO = {0x42, 0x50, 0x00, 0x02}
+  BEGIN = 0xF0,
+  END = 0xF7,
+  HELLO = {0x42, 0x50, 0x00, 0x02},
+  PROGRAM_INFO = {0x42, 0x30, 0x00, 0x01, 0x57, 0x19, 0x00, 0x00},
+  SLOT_TYPES = {
+    MOD = 1,
+    DELAY = 2,
+    REVERB = 3,
+    OSC = 4
+  }
 }
 
 -- Send sysex.
 --
--- adapted from zebra's https://llllllll.co/t/how-do-i-send-midi-sysex-messages-on-norns/34359/15?u=xmacex
+-- Adapted from zebra's https://llllllll.co/t/how-do-i-send-midi-sysex-messages-on-norns/34359/15?u=xmacex
 --
--- @param m: a midi device
+-- and https://github.com/oscillatorsink/nts-1-research/blob/master/sysex/patch_info.md
+--
 -- @param d: a table of systex data, omitting the framing bytes
 Nts1.send_sysex = function(d)
   nts1:send{0xf0}
@@ -45,12 +56,79 @@ Nts1.send_sysex = function(d)
   nts1:send{0xf7}
 end
 
+-- Receive sysex, stored in a global variable lol.
+--
+-- Building on from https://github.com/oscillatorsink/nts-1-research/blob/master/sysex/patch_info.md
+--
+-- @param first_msg: the first sysex message
+Nts1.receive_sysex = function(first_msg)
+  assert first_msg.type == "sysex"
+  SYSEX_RECEIVED = {}
+  for i,b in ipairs(first_msg.raw) do
+    table.insert(SYSEX_RECEIVED, b)
+  end
+  nts1.event = Nts1.receive_more_sysex
+  assert SYSEX_RECEIVED[1] == Nts1.SYSEX.BEGIN, "Corrupt SYSEX begin."
+  assert SYSEX_RECEIVED[#SYSEX_RECEIVED] == Nts1.SYSEX.END, "Corrupt SYSEX end."
+  return SYSEX_RECEIVED
+end
+
+-- Utility function for "paginated" sysex data
+Nts1.receive_more_sysex = function(data)
+  local msg = midi.to_msg(data)
+  assert msg.type == "other"
+  for i,b in ipairs(msg.raw) do
+    table.insert(SYSEX_RECEIVED, b)
+    if b == Nts1.SYSEX.END then
+      nts1.event = Nts1.monitor
+    end
+  end
+end
+
+-- Perform a sysex handshake
+Nts1.sysex_handshake = function()
+  Nts1.send_sysex(Nts1.SYSEX.HELLO)
+  local olleh = SYSEX_RECEIVED
+  assert(olleh[2], 0x42, "Hello response not from Korg")
+  assert(olleh[7], 0x57, "Hello response not from NTS-1")
+  return olleh
+end
+
+-- Check firmware version. FIXME They are two bytes each
+Nts1.firmware_version = function()
+  local elloh = Nts1.sysex_handshake()
+  local major = elloh[11]
+  local minor = elloh[12]
+  return {"major": major = "minor" = minor}
+end
+
+-- Get program info for custom oscillators, mods, delays and reverbs.
+--
+-- For example get_program_info(1, Nts1.SYSEX.SLOT_TYPES.MOD, 3)
+--
+-- Building on from https://github.com/oscillatorsink/nts-1-research/blob/master/sysex/patch_info.md
+--
+-- @param channel: MIDI channel
+-- @param slot_type: osc, mod, delay or reverb slot. See Nts1.SYSEX.SLOT_TYPES
+-- @param slot_number: slot type
+Nts1.get_program_info = function(channel, slot_type, slot_number)
+  Nts1.send_sysex({0x42, 0x30 + channel, 0x00, 0x01, 0x57, 0x19, 0x00 + slot_type, 0x00 + slot_number})
+  local program_info = SYSEX_RECEIVED
+  return program_info
+end
+
+
+
 -- Monitor
 
-nts1.event = function(data)
+Nts1.monitor = function(data)
   local msg = midi.to_msg(data)
   if msg.type ~= "clock" then
+    print('-- MIDI message')
     tab.print(msg)
+    if msg.type == "sysex" then
+      Nts1.receive_sysex(msg)
+    end
   end
 end
 
